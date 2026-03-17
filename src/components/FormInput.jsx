@@ -1,4 +1,4 @@
-const FormInput = ({ label, type, name, defaultValue }) => {
+const FormInput = ({ label, type, name, defaultValue, size }) => {
   return (
     <fieldset className="fieldset">
       <legend className="fieldset-legend capitalize">{label}</legend>
@@ -6,7 +6,7 @@ const FormInput = ({ label, type, name, defaultValue }) => {
         type={type}
         name={name}
         defaultValue={defaultValue}
-        className="input"
+        className={`input input-bordered ${size}`}
       />
     </fieldset>
   );
