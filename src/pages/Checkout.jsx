@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 export const loader = (store) => () => {
   const user = store.getState().userState.user;
   console.log(user);
+
   if (!user) {
     setTimeout(() => toast.warn("You must be logged in to checkout"), 100);
     return redirect("/login");

@@ -1,11 +1,54 @@
-import { Form } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import FormInput from "./FormInput";
 import SubmitBtn from "./SubmitBtn";
+import { customFetch, formatPrice } from "../utils";
+import { clearCart } from "../features/cart/cartSlice";
+import { toast } from "react-toastify";
 
-export const action = (store) => async () => {
-  console.log(store);
-  return null;
-};
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const formData = await request.formData();
+    const { name, address } = Object.fromEntries(formData);
+
+    const user = store.getState().userState.user;
+
+    console.log(user);
+    const { cartItems, orderTotal, numItemsInCart } =
+      store.getState().cartState;
+
+    const info = {
+      name,
+      address,
+      chargeTotal: orderTotal,
+      orderTotal: formatPrice(orderTotal),
+      cartItems,
+      numItemsInCart,
+    };
+
+    try {
+      const res = await customFetch.post(
+        "/orders",
+        { data: info },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        },
+      );
+      console.log(res);
+      store.dispatch(clearCart());
+      toast.success("Order placed successfully");
+      return redirect("/");
+    } catch (err) {
+      const errorMessage =
+        err?.response?.data?.error?.message ||
+        "There was an error placing you order.";
+      toast.error(errorMessage);
+      if (error.response.status === 401 || 403) return redirect("/login");
+      return null;
+    }
+  };
 
 const CheckoutForm = () => {
   return (
