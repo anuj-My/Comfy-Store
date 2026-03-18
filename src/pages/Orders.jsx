@@ -3,8 +3,25 @@ import { customFetch } from "../utils";
 import { toast } from "react-toastify";
 import { AdvancedPagination, OrderList, SectionTitle } from "../components";
 
+const ordersQuery = (params, user) => {
+  return {
+    queryKey: [
+      "orders",
+      user.user.username,
+      params.page ? parseInt(params.page) : 1,
+    ],
+    queryFn: () =>
+      customFetch.get("/orders", {
+        params,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }),
+  };
+};
+
 export const loader =
-  (store) =>
+  (store, queryClient) =>
   async ({ request }) => {
     const user = store.getState().userState.user;
     if (!user) {
@@ -20,12 +37,7 @@ export const loader =
     const params = Object.fromEntries(searchParams.entries());
 
     try {
-      const res = await customFetch.get("/orders", {
-        params,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const res = await queryClient.ensureQueryData(ordersQuery(params, user));
 
       return { orders: res.data.data, meta: res.data.meta };
     } catch (err) {
@@ -33,7 +45,9 @@ export const loader =
         err?.response?.data?.error?.message ||
         "There was an error getting orders";
       toast.error(errorMessage);
-      if (error.response.status === 401 || 403) return redirect("/login");
+      if (err?.response?.status === 401 || err?.response?.status === 403) {
+        return redirect("/login");
+      }
       return null;
     }
   };
