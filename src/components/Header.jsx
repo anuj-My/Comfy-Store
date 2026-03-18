@@ -6,7 +6,7 @@ import { clearCart } from "../features/cart/cartSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.userState.user);
+  const user = useSelector((state) => state.userState.user);
 
   const handleLogout = () => {
     navigate("/");
@@ -19,7 +19,7 @@ const Header = () => {
         {/* user  */}
         {user ? (
           <div className="flex gap-x-2 sm:gap-x-8 items-center">
-            <p className="text-xs sm:text-sm">Hello, {user.username}</p>
+            <p className="text-xs sm:text-sm">Hello, {user?.user?.username}</p>
             <button
               onClick={handleLogout}
               className="btn btn-xs btn-outline btn-primary"
