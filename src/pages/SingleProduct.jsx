@@ -26,7 +26,7 @@ const SingleProduct = () => {
 
   const addItemToCart = () => {
     const cartProduct = {
-      cartID: product.id + productColor,
+      cartId: product.id + productColor,
       productID: product.id,
       image,
       title,

@@ -2,7 +2,7 @@
 @plugin "daisyui" {
   themes:
     winter --default,
-    business --prefersdark;
+    dracula --prefersdark;
 }
 
 @layer components {

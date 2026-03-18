@@ -21,7 +21,7 @@ const cartSlice = createSlice({
     addItem: (state, action) => {
       const { product } = action.payload;
       const item = state.cartItems.find(
-        (item) => product.cartID === item.cartID,
+        (item) => product.cartId === item.cartId,
       );
 
       if (item) {
@@ -41,11 +41,11 @@ const cartSlice = createSlice({
       return initialState;
     },
     removeItem: (state, action) => {
-      const { cartID } = action.payload;
-      const product = state.cartItems.find((item) => item.cartID === cartID);
+      const { cartId } = action.payload;
+      const product = state.cartItems.find((item) => item.cartId === cartId);
 
       state.cartItems = state.cartItems.filter(
-        (item) => item.cartID !== cartID,
+        (item) => item.cartId !== cartId,
       );
 
       state.numItemsInCart -= product.amount;
@@ -54,8 +54,8 @@ const cartSlice = createSlice({
       toast.error("Item removed from cart");
     },
     editItem: (state, action) => {
-      const { cartID, amount } = action.payload;
-      const item = state.cartItems.find((i) => i.cartID === cartID);
+      const { cartId, amount } = action.payload;
+      const item = state.cartItems.find((i) => i.cartId === cartId);
 
       state.numItemsInCart += amount - item.amount;
       state.cartTotal += item.price * (amount - item.amount);

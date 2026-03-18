@@ -12,7 +12,7 @@ const CartItem = ({ cartItem }) => {
   };
 
   const handleAmount = (e) => {
-    dispatch(editItem({ cartId, amount: parseInt(e.targe.value) }));
+    dispatch(editItem({ cartId, amount: parseInt(e.target.value) }));
   };
   return (
     <article className="mb-12 flex flex-col gap-y-4 sm:flex-row flex-wrap border-b border-base-300 pb-6 last:border-b-0">
@@ -36,7 +36,7 @@ const CartItem = ({ cartItem }) => {
         </p>
       </div>
 
-      <div className="sm:ml-24">
+      <div className="sm:ml-12">
         <div className="form-control max-w-xs">
           <label htmlFor="amount" className="label p-0">
             <span className="label-text">Amount</span>
